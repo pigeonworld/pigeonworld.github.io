@@ -101,11 +101,18 @@
       object-fit: cover;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, z-index 0.3s ease;
+      cursor: pointer;
     }
 
-    .gallery img:hover {
-      transform: scale(1.05);
+    .gallery img.expanded {
+      height: 400px;
+      z-index: 10;
+      transform: scale(1.1);
+    }
+
+    .gallery img:not(.expanded) {
+      transition: height 0.5s ease;
     }
 
     .facts {
@@ -314,6 +321,20 @@
   </footer>
 
   <script>
+    document.querySelectorAll('.gallery img').forEach(img => {
+      img.addEventListener('click', function () {
+        // Toggle expanded state
+        this.classList.toggle('expanded');
+        
+        // Collapse other images
+        document.querySelectorAll('.gallery img').forEach(otherImg => {
+          if (otherImg !== this) {
+            otherImg.classList.remove('expanded');
+          }
+        });
+      });
+    });
+
     document.getElementById('contactForm').addEventListener('submit', function (event) {
       event.preventDefault();
       
